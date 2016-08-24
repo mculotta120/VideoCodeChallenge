@@ -11,15 +11,35 @@
 
     <h1> Code Challenge </h1>
     <div ng-controller = 'videoController' ng-init="getAllVideos()">
-      <h2> Videos </h2>
-      <div ng-repeat= "video in videoArray">
-        <p>video- {{video}}</p>
-    </div>
+    <h2> Videos </h2>
+    <table style="width:80%">
+    <tr>
+      <th>Date Added:</th>
+      <th>Views</th>
+      <th>Name:</th>
+      <th>Link:</th>
+      <th>Rank:</th>
+      <th></th>
+    </tr>
+      <tr ng-repeat= "video in videoArray">
+        <th>{{video.attributes.created_at}}</th>
+        <th>{{video.attributes.view_tally}}</th>
+        <th>{{video.attributes.title}}</th>
+        <th> <a href="{{video.attributes.url}}" ng-click="viewTallyUp( $index )">{{video.attributes.url}}</a></th>
+        <div id="votes">
+        <th>{{video.attributes.vote_tally}}</th>
+        <th><button type="button" name="voteUp" ng-click="voteUp( $index )">Vote Up</button>
+        <button type="button" name="voteDown" ng-click="voteDown( $index )">Vote Down</button></th>
+        </div>
+      </tr>
+      </table>
+      </div>
 
   <input type="text" ng-model='videoTitleIn' value="" placeholder="Video Title">
   <input type="text" ng-model='videoURLIn' value="" placeholder="Video URL">
   <input type="text" ng-model='videoSlugIn' value="" placeholder="Video Slug">
   <button ng-click='addVideo()'>Add Video</button>
+
 </div>
 </div>
   </body>

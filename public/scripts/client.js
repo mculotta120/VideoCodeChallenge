@@ -47,25 +47,10 @@ $scope.getAllVideos = function(){
           }).then( function( response ){
             // log the response from the http call
             console.log( 'retrieved info for ', response.data.data);
+            $scope.videoArray = response.data.data;
    });
   //  $scope.videoArray = response.data;
    console.log($scope.videoArray, "videoArray");
-
-  // var request = new XMLHttpRequest();
-  //
-  // request.open('GET', 'https://proofapi.herokuapp.com/videos?page&per_page?page=1&per_page=10');
-  //
-  // request.setRequestHeader('Content-Type', 'application/json');
-  // request.setRequestHeader('X-Auth-Token', 'QmDi1cmmxgWSrpqqQmfj4UwJ');
-  //
-  // request.onreadystatechange = function () {
-  //   if (this.readyState === 4) {
-  //     console.log('Status:', this.status);
-  //     console.log('Headers:', this.getAllResponseHeaders());
-  //     console.log('Body:', this.responseText);
-  //     $scope.videoArray = this.responseText;
-  //   }
-  // };
 
 }; // end getAllVideos
 
@@ -86,29 +71,18 @@ $scope.addVideo = function(){
             }); // end object
      }; //end addVideo
 
+$scope.viewTallyUp = function( $index ){
+  console.log($index, "tally up clicked");
+};
 
-// var request = new XMLHttpRequest();
-//
-// request.open('POST', 'https://proofapi.herokuapp.com/videos');
-//
-// request.setRequestHeader('Content-Type', 'application/json');
-// request.setRequestHeader('X-Auth-Token', 'QmDi1cmmxgWSrpqqQmfj4UwJ');
-//
-// request.onreadystatechange = function () {
-//   if (this.readyState === 4) {
-//     console.log('Status:', this.status);
-//     console.log('Headers:', this.getAllResponseHeaders());
-//     console.log('Body:', this.responseText);
-//   }
-// };
-//
-// var body = {
-//   'title': 'The Highest Mountain',
-//   'url': 'http://vimeo.com/22439234',
-//   'slug': 'the-highest-mountain'
-// };
-//
-// request.send(JSON.stringify(body));
+$scope.voteUp = function( $index ){
+  console.log($index, "vote up clicked");
+};
+
+$scope.voteDown = function( $index ){
+  console.log($index, "vote down clicked");
+};
+
 
 
 }]);
