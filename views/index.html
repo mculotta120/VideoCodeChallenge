@@ -5,6 +5,7 @@
     <title>Video Code Challenge</title>
     <script src="vendors/angular.min.js" type="text/javascript"></script>
     <script src="scripts/client.js" type="text/javascript"></script>
+    <link rel="stylesheet" href= "vendors/bootstrap.min.css"/>
   </head>
   <body>
     <div ng-controller='videoController'>
@@ -12,13 +13,13 @@
     <h1> Code Challenge </h1>
     <div ng-controller = 'videoController' ng-init="getAllVideos()">
     <h2> Videos </h2>
-    <table style="width:80%">
+    <table class="table table-bordered table-striped" style="width:80%" >
     <tr>
-      <th>Date Added:</th>
-      <th>Views</th>
-      <th>Name:</th>
+      <th><a href="" ng-click="sortType = 'created_at'; sortReverse = !sortReverse">Date Added:</a></th>
+      <th><a href="" ng-click="sortType = 'view_tally'; sortReverse = !sortReverse">Views</a></th>
+      <th><a href="" ng-click="sortType = 'title'; sortReverse = !sortReverse">Name:</a></th>
       <th>Link:</th>
-      <th>Rank:</th>
+      <th><a href="" ng-click="sortType = 'vote_tally'; sortReverse = !sortReverse">Rank:</a></th>
       <th></th>
     </tr>
       <tr ng-repeat= "video in videoArray">
@@ -34,11 +35,11 @@
       </tr>
       </table>
       </div>
-
+<h2> Add a new Video- </h2>
   <input type="text" ng-model='videoTitleIn' value="" placeholder="Video Title">
   <input type="text" ng-model='videoURLIn' value="" placeholder="Video URL">
   <input type="text" ng-model='videoSlugIn' value="" placeholder="Video Slug">
-  <button ng-click='addVideo()'>Add Video</button>
+  <button ng-click='addVideo() ' >Add Video</button>
 
 </div>
 </div>

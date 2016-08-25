@@ -69,18 +69,58 @@ $scope.addVideo = function(){
             }).then( function( response ){
              console.log(videoToAdd.title, "Added Video");
             }); // end object
+
+            $scope.videoTitleIn = "";
+            $scope.videoURLIn = "";
+            $scope.videoSlugIn = "";
+            $scope.getAllVideos();
+            $route.reload();
+
      }; //end addVideo
+
+  $scope.sortName     = 'name'; // set the default sort type
+  $scope.sortReverse  = false;  // set the default sort order
 
 $scope.viewTallyUp = function( $index ){
   console.log($index, "tally up clicked");
 };
 
 $scope.voteUp = function( $index ){
-  console.log($index, "vote up clicked");
+  console.log($scope.videoArray[$index].id, "id");
+  $scope.videoIndex = $scope.videoArray[$index].id;
+  console.log($scope.videoIndex, "video index");
+    var voteUpdate = {
+      // votes: $scope.plusOne
+      opinion: 1
+    };
+  $http({
+              method: 'POST',
+              url: 'https://proofapi.herokuapp.com/videos/'+$scope.videoIndex+'/votes',
+              data: voteUpdate,
+              dataType: 'jsonp',
+              headers: { 'Content-Type':'application/json', 'X-Auth-Token':'QmDi1cmmxgWSrpqqQmfj4UwJ' }
+            }).then( function( response ){
+             console.log(response, "back from POST");
+            }); // end object
 };
 
 $scope.voteDown = function( $index ){
   console.log($index, "vote down clicked");
+  $scope.videoIndex = $scope.videoArray[$index].id;
+  console.log($scope.videoIndex, "video index");
+    var voteUpdate = {
+      // votes: $scope.plusOne
+      opinion: -1
+    };
+  $http({
+              method: 'POST',
+              url: 'https://proofapi.herokuapp.com/videos/'+$scope.videoIndex+'/votes',
+              data: voteUpdate,
+              dataType: 'jsonp',
+              headers: { 'Content-Type':'application/json', 'X-Auth-Token':'QmDi1cmmxgWSrpqqQmfj4UwJ' }
+            }).then( function( response ){
+             console.log(response, "back from POST");
+            }); // end object
 };
 
 
