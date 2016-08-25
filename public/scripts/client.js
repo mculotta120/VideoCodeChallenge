@@ -4,41 +4,16 @@ console.log("client.js is sourced");
 var myApp = angular.module( 'myApp', [] );
 //create a controller
 
-myApp.controller('videoController', [ '$scope', '$http', function( $scope, $http ){
+myApp.controller('videoController', [ '$scope', '$http', '$window', function( $scope, $http, $window ){
   // global list of movie searches
   $scope.videoArray = [];
+  $scope.votingOpen = 'true';
 
-
-//   $scope.videoGet = function(){
-//     console.log("in videoGet");
-//
-//   var request = new XMLHttpRequest();
-//
-// request.open('POST', 'https://proofapi.herokuapp.com/sessions');
-//
-// request.setRequestHeader('Content-Type', 'application/json');
-//
-// request.onreadystatechange = function () {
-//   if (this.readyState === 4) {
-//     console.log('Status:', this.status);
-//     console.log('Headers:', this.getAllResponseHeaders());
-//     console.log('Body:', this.responseText);
-//     $scope.body = this.responseText;
-//   }
-// };
-//
-// var body = {
-//   'email': 'margaret.culotta@gmail.com',
-//   'password': 'capitalness,orchialgia,podical'
-// };
-//
-// request.send(JSON.stringify(body));
-// $scope.user = request;
-// console.log($scope.user, "user");
-// console.log($scope.userTwo, "user2");
-// };
 
 $scope.getAllVideos = function(){
+
+      
+
        $http({
             method: 'GET',
             url: 'https://proofapi.herokuapp.com/videos?page&per_page?page=1&per_page=10',
@@ -49,8 +24,7 @@ $scope.getAllVideos = function(){
             console.log( 'retrieved info for ', response.data.data);
             $scope.videoArray = response.data.data;
    });
-  //  $scope.videoArray = response.data;
-   console.log($scope.videoArray, "videoArray");
+
 
 }; // end getAllVideos
 
@@ -82,7 +56,22 @@ $scope.addVideo = function(){
   $scope.sortReverse  = false;  // set the default sort order
 
 $scope.viewTallyUp = function( $index ){
-  console.log($index, "tally up clicked");
+  var url = $scope.videoArray[$index].attributes.url;
+
+    var viewUpdate = {
+       video_id: $scope.videoArray[$index].id
+    };
+  $http({
+              method: 'POST',
+              url: 'https://proofapi.herokuapp.com/views',
+              data: viewUpdate,
+              dataType: 'jsonp',
+              headers: { 'Content-Type':'application/json', 'X-Auth-Token':'QmDi1cmmxgWSrpqqQmfj4UwJ' }
+            }).then( function( response ){
+             console.log(response, "back from POST");
+            }); // end object
+
+    $window.open( url );
 };
 
 $scope.voteUp = function( $index ){
@@ -109,7 +98,6 @@ $scope.voteDown = function( $index ){
   $scope.videoIndex = $scope.videoArray[$index].id;
   console.log($scope.videoIndex, "video index");
     var voteUpdate = {
-      // votes: $scope.plusOne
       opinion: -1
     };
   $http({

@@ -26,11 +26,13 @@
         <th>{{video.attributes.created_at}}</th>
         <th>{{video.attributes.view_tally}}</th>
         <th>{{video.attributes.title}}</th>
-        <th> <a href="{{video.attributes.url}}" ng-click="viewTallyUp( $index )">{{video.attributes.url}}</a></th>
+        <th> <a href="" ng-click="viewTallyUp( $index )">{{video.attributes.url}}</a></th>
         <div id="votes">
         <th>{{video.attributes.vote_tally}}</th>
+        <div id= "voteButtons" ng-show="votingOpen == 'true'">
         <th><button type="button" name="voteUp" ng-click="voteUp( $index )">Vote Up</button>
         <button type="button" name="voteDown" ng-click="voteDown( $index )">Vote Down</button></th>
+        </div>
         </div>
       </tr>
       </table>
