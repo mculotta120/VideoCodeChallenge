@@ -10,9 +10,22 @@ myApp.controller('videoController', [ '$scope', '$http', '$window', function( $s
   $scope.votingOpen = 'true';
 
 
-$scope.getAllVideos = function(){
+  //open voting m-f
+$scope.toggleVoting = function(){
+  $scope.d = new Date();
+  $scope.n = $scope.d.getDay();
 
-      
+  console.log($scope.n, "is the day");
+  if($scope.n == "0" || $scope.n == "6"){
+    $scope.votingOpen = 'false';
+  }else {
+    $scope.votingOpen = 'true';
+  }
+  console.log($scope.votingOpen, "votingOpen()");
+};
+
+//function to populate table with all of the videos in the API
+$scope.getAllVideos = function(){
 
        $http({
             method: 'GET',
@@ -24,7 +37,7 @@ $scope.getAllVideos = function(){
             console.log( 'retrieved info for ', response.data.data);
             $scope.videoArray = response.data.data;
    });
-
+$scope.toggleVoting();
 
 }; // end getAllVideos
 
