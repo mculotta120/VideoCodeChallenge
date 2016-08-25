@@ -5,23 +5,29 @@ var myApp = angular.module( 'myApp', [] );
 //create a controller
 
 myApp.controller('videoController', [ '$scope', '$http', '$window', function( $scope, $http, $window ){
-  // global list of movie searches
   $scope.videoArray = [];
   $scope.votingOpen = 'true';
+  $scope.votingMessage = "Voting is Open";
+  $scope.addInMessage = "Add a Video";
 
+  //open voting and new video input m-f
 
-  //open voting m-f
 $scope.toggleVoting = function(){
   $scope.d = new Date();
   $scope.n = $scope.d.getDay();
-
-  console.log($scope.n, "is the day");
+  // console.log($scope.n, "is the day");
   if($scope.n == "0" || $scope.n == "6"){
     $scope.votingOpen = 'false';
+    $scope.votingMessage = "voting is closed";
+    $scope.addInMessage= "Please come back Monday - Friday to add a Video";
   }else {
     $scope.votingOpen = 'true';
+    $scope.votingMessage = "voting is open";
+    $scope.addInMessage ="Add a Video";
   }
-  console.log($scope.votingOpen, "votingOpen()");
+  console.log($scope.addInOpen, "addInOpen()");
+  console.log($scope.addInMessage);
+
 };
 
 //function to populate table with all of the videos in the API

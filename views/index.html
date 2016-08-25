@@ -20,7 +20,7 @@
       <th><a href="" ng-click="sortType = 'title'; sortReverse = !sortReverse">Name:</a></th>
       <th>Link:</th>
       <th><a href="" ng-click="sortType = 'vote_tally'; sortReverse = !sortReverse">Rank:</a></th>
-      <th></th>
+      <th>Vote</th>
     </tr>
       <tr ng-repeat= "video in videoArray">
         <th>{{video.attributes.created_at}}</th>
@@ -30,19 +30,24 @@
         <div id="votes">
         <th>{{video.attributes.vote_tally}}</th>
         <div id= "voteButtons" >
-        <th ng-show="votingOpen == 'true'"><button type="button" name="voteUp" ng-click="voteUp( $index )">Vote Up</button>
-        <button type="button" name="voteDown" ng-click="voteDown( $index )">Vote Down</button></th>
+        <th>
+          {{votingMessage}}
+          <button ng-show="votingOpen == 'true'" type="button" name="voteUp" ng-click="voteUp( $index )">Vote Up</button>
+          <button ng-show="votingOpen == 'true'" type="button" name="voteDown" ng-click="voteDown( $index )">Vote Down</button></th>
         </div>
         </div>
       </tr>
       </table>
-      </div>
-<h2> Add a new Video- </h2>
-  <input type="text" ng-model='videoTitleIn' value="" placeholder="Video Title">
-  <input type="text" ng-model='videoURLIn' value="" placeholder="Video URL">
-  <input type="text" ng-model='videoSlugIn' value="" placeholder="Video Slug">
-  <button ng-click='addVideo() ' >Add Video</button>
 
+
+    <h2> Add a new Video- </h2>
+        {{addInMessage}}
+      <div id = "addVideoInputs" ng-show="votingOpen == 'true'" >
+        <input type="text" ng-model='videoTitleIn' value="" placeholder="Video Title">
+        <input type="text" ng-model='videoURLIn' value="" placeholder="Video URL">
+        <input type="text" ng-model='videoSlugIn' value="" placeholder="Video Slug">
+        <button ng-click='addVideo()'>Add Video</button>
+      </div>
 </div>
 </div>
   </body>
