@@ -10,13 +10,14 @@ myApp.controller('videoController', [ '$scope', '$http', '$window', function( $s
   $scope.votingMessage = "Voting is Open";
   $scope.addInMessage = "Add a Video";
   $scope.inputMessage = "";
-  $scope.voteToday = "true";
+  $scope.voteToday= "true";
 
   //open voting and new video input m-f
 
 $scope.toggleVoting = function(){
   $scope.d = new Date();
-  $scope.n = $scope.d.getDay();
+  // $scope.n = $scope.d.getDay();
+  $scope.n = '5';
   // console.log($scope.n, "is the day");
   if($scope.n == "0" || $scope.n == "6"){
     $scope.votingOpen = 'false';
@@ -60,6 +61,7 @@ $scope.titleCheck = function(){
 }
 };
 
+
 $scope.addVideo = function(){
     $scope.videoTitleIn = "";
     $scope.videoURLIn = "";
@@ -87,9 +89,7 @@ $scope.addVideo = function(){
 
 }; //end addVideo
 
-  $scope.sortName     = 'name'; // set the default sort type
-  $scope.sortReverse  = false;  // set the default sort order
-
+//increase view count if link is clicked
 $scope.viewTallyUp = function( $index ){
   var url = $scope.videoArray[$index].attributes.url;
 
@@ -109,6 +109,7 @@ $scope.viewTallyUp = function( $index ){
     $window.open( url );
 };
 
+//add vote to vote_tally
 $scope.voteUp = function( $index ){
   console.log($scope.videoArray[$index].id, "id");
   $scope.videoIndex = $scope.videoArray[$index].id;
@@ -130,6 +131,7 @@ $scope.voteUp = function( $index ){
             $scope.voteToday = "false";
 };  //end voteUp
 
+//subract vote from vote tally
 $scope.voteDown = function( $index ){
   console.log($index, "vote down clicked");
   $scope.videoIndex = $scope.videoArray[$index].id;
@@ -150,6 +152,8 @@ $scope.voteDown = function( $index ){
             $scope.voteToday = "false";
 }; //end voteDown
 
+
+//sort by table headers
 $scope.predicate = 'title';
       $scope.reverse = true;
       $scope.order = function(predicate) {
