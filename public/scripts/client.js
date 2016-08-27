@@ -9,6 +9,8 @@ myApp.controller('videoController', [ '$scope', '$http', '$window', function( $s
   $scope.votingOpen = 'true';
   $scope.votingMessage = "Voting is Open";
   $scope.addInMessage = "Add a Video";
+  $scope.inputMessage = "";
+  $scope.voteToday = "true";
 
   //open voting and new video input m-f
 
@@ -47,29 +49,43 @@ $scope.toggleVoting();
 
 }; // end getAllVideos
 
+$scope.titleCheck = function(){
+  for (i = 0; i < $scope.videoArray.length; i++){
+  if($scope.videoURLIn == $scope.videoArray[i].attributes.url){
+  $scope.inputMessage = "This video has already been added. Please add a new video.";
+  }else{ console.log("this is a new video.");
+  console.log($scope.videoArray[i].attributes.url, "url");
+  // $scope.addVideo();
+  }
+}
+};
+
 $scope.addVideo = function(){
-  var videoToAdd = {
-    title: $scope.videoTitleIn,
-    url: $scope.videoURLIn,
-    slug: $scope.videoSlugIn
-  };
-  $http({
-              method: 'POST',
-              url: 'https://proofapi.herokuapp.com/videos',
-              data: videoToAdd,
-              dataType: 'jsonp',
-              headers: { 'Content-Type':'application/json', 'X-Auth-Token':'QmDi1cmmxgWSrpqqQmfj4UwJ' }
-            }).then( function( response ){
-             console.log(videoToAdd.title, "Added Video");
-            }); // end object
+    $scope.videoTitleIn = "";
+    $scope.videoURLIn = "";
+    $scope.videoSlugIn = "";
+    $scope.getAllVideos();
+    $route.reload();
+    console.log($scope.inputMessage, "inputMessage");
 
-            $scope.videoTitleIn = "";
-            $scope.videoURLIn = "";
-            $scope.videoSlugIn = "";
-            $scope.getAllVideos();
-            $route.reload();
 
-     }; //end addVideo
+  // var videoToAdd = {
+  //   title: $scope.videoTitleIn,
+  //   url: $scope.videoURLIn,
+  //   slug: $scope.videoSlugIn
+  // };
+  // $http({
+  //             method: 'POST',
+  //             url: 'https://proofapi.herokuapp.com/videos',
+  //             data: videoToAdd,
+  //             dataType: 'jsonp',
+  //             headers: { 'Content-Type':'application/json', 'X-Auth-Token':'QmDi1cmmxgWSrpqqQmfj4UwJ' }
+  //           }).then( function( response ){
+  //            console.log(videoToAdd.title, "Added Video");
+  //           }); // end object
+  //
+
+}; //end addVideo
 
   $scope.sortName     = 'name'; // set the default sort type
   $scope.sortReverse  = false;  // set the default sort order
@@ -110,7 +126,9 @@ $scope.voteUp = function( $index ){
             }).then( function( response ){
              console.log(response, "back from POST");
             }); // end object
-};
+
+            $scope.voteToday = "false";
+};  //end voteUp
 
 $scope.voteDown = function( $index ){
   console.log($index, "vote down clicked");
@@ -128,8 +146,15 @@ $scope.voteDown = function( $index ){
             }).then( function( response ){
              console.log(response, "back from POST");
             }); // end object
-};
 
+            $scope.voteToday = "false";
+}; //end voteDown
 
+$scope.predicate = 'title';
+      $scope.reverse = true;
+      $scope.order = function(predicate) {
+        $scope.reverse = ($scope.predicate === predicate) ? !$scope.reverse : false;
+        $scope.predicate = predicate;
+      };
 
 }]);
