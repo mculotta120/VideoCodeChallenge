@@ -14,6 +14,4 @@ app.get( '/', function( req, res ){
 
 
 //spin up server
-app.listen( 8080, 'localhost', function( req, res ){
-  console.log( 'listening on 8080' );
-});
+app.listen(process.env.PORT || 8080, function(){ console.log("Running on local port 8080"); });

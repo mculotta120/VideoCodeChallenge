@@ -104,6 +104,7 @@ $scope.viewTallyUp = function( video ){
 
     $window.open( url );
     $scope.getAllVideos();
+
 };
 
 //hide buttons once user has voted
@@ -116,6 +117,8 @@ $scope.viewTallyUp = function( video ){
 //add vote to vote_tally
 $scope.voteUp = function( video ){
   $scope.videoIndex = video.id;
+    var index = $scope.videoArray.indexOf( video );
+    console.log(index, "index");
     var voteUpdate = {
       opinion: 1
     };
@@ -130,6 +133,7 @@ $scope.voteUp = function( video ){
             }); // end object
 
 $scope.getAllVideos();
+
 };  //end voteUp
 
 //subract vote from vote tally
