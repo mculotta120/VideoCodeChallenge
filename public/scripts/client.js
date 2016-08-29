@@ -4,12 +4,13 @@ console.log("client.js is sourced");
 var myApp = angular.module( 'myApp', [] );
 //create a controller
 
-myApp.controller('videoController', [ '$scope', '$http', '$window', function( $scope, $http, $window ){
+myApp.controller('videoController', [ '$scope', '$http', '$window',  function( $scope, $http, $window ){
   $scope.videoArray = [];
   $scope.urlArray=[];
   $scope.votingOpen = 'true';
   $scope.votingMessage = "Voting is Open";
   $scope.addInMessage = "Add a Video";
+
 
   //open voting and new video input m-f
 
@@ -27,9 +28,6 @@ $scope.toggleVoting = function(){
     $scope.votingMessage = "voting is open";
     $scope.addInMessage ="Add a Video";
   }
-  console.log($scope.addInOpen, "addInOpen()");
-  console.log($scope.addInMessage);
-
 };
 
 //function to populate table with all of the videos in the API
@@ -42,13 +40,14 @@ $scope.getAllVideos = function(){
             headers: { 'Content-Type':'application/json', 'X-Auth-Token':'3mSSbwByhVHUpqRQSGMTP9Ja' }
           }).then( function( response ){
             // log the response from the http call
-            console.log( 'retrieved info for ', response.data.data);
+            // console.log( 'retrieved info for ', response.data.data);
             $scope.videoArray = response.data.data;
-            console.log($scope.videoArray, "video array");
+            // console.log($scope.videoArray, "video array");
    });
 
    $scope.toggleVoting();
 }; // end getAllVideos
+
 
 //checks input url for duplicates within the API
 $scope.titleCheck = function(){
@@ -68,8 +67,8 @@ $scope.addVideo = function(){
   var videoToAdd = {
     title: $scope.videoTitleIn,
     url: $scope.videoURLIn,
-    slug: $scope.videoSlugIn
   };
+  console.log(videoToAdd, "videoToAdd");
   $http({
               method: 'POST',
               url: 'https://proofapi.herokuapp.com/videos',
@@ -108,6 +107,13 @@ $scope.viewTallyUp = function( video ){
     $scope.getAllVideos();
 };
 
+//hide buttons once user has voted
+    $scope.hiddenDiv = true;
+    $scope.showDiv = function () {
+      $scope.hiddenDiv = !$scope.hiddenDiv;
+    };
+
+
 //add vote to vote_tally
 $scope.voteUp = function( video ){
   $scope.videoIndex = video.id;
@@ -123,7 +129,7 @@ $scope.voteUp = function( video ){
             }).then( function( response ){
             //  console.log(response, "back from POST");
             }); // end object
-// $scope.votingOpen.video = 'false';
+
 $scope.getAllVideos();
 };  //end voteUp
 

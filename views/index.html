@@ -13,7 +13,7 @@
       <div ng-controller = 'videoController' ng-init="getAllVideos()">
     <h1> Code Challenge Video Voter</h1>
       <div id= "videoInputs">
-        <h2> Add a new Video- </h2>
+        <h2> Add a New Video- </h2>
          <div id = "inputMessage">
             {{addInMessage}}
             {{inputMessage}}
@@ -21,7 +21,7 @@
           <div id = "addVideoInputs" ng-show="votingOpen == 'true'" >
             <input type="text" ng-model='videoTitleIn' value="" placeholder="Video Title">
             <input type="text" ng-model='videoURLIn' value="" placeholder="Video URL">
-            <input type="text" ng-model='videoSlugIn' value="" placeholder="Video Slug (no spaces!)">
+            <!-- <input type="text" ng-model='videoSlugIn' value="" placeholder="Video Slug (no spaces!)"> -->
             <button ng-click='titleCheck()'>Add Video</button>
           </div>
       </div>
@@ -47,8 +47,8 @@
         <th>
           {{votingMessage}}
         <div id= "voteButtons" ng-show="votingOpen == 'true'">
-          <button type="button"  name="voteUp" ng-click="voteUp( video )">Vote Up</button>
-          <button  type="button" name="voteDown" ng-click="voteDown( video )">Vote Down</button></th>
+          <button type="button" ng-show="hiddenDiv"  name="voteUp" ng-click="voteUp( video ); hiddenDiv = !hiddenDiv">Vote Up</button>
+          <button  type="button" ng-show="hiddenDiv" name="voteDown" ng-click="voteDown( video ); hiddenDiv = !hiddenDiv">Vote Down</button></th>
         </div>
         </div>
       </tr>
