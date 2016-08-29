@@ -16,8 +16,7 @@ myApp.controller('videoController', [ '$scope', '$http', '$window',  function( $
 
 $scope.toggleVoting = function(){
   $scope.d = new Date();
-  // $scope.n = $scope.d.getDay();
-  $scope.n = '5';
+  $scope.n = $scope.d.getDay();
   // console.log($scope.n, "is the day");
   if($scope.n == "0" || $scope.n == "6"){
     $scope.votingOpen = 'false';
