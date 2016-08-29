@@ -14,7 +14,7 @@
     <h1> Code Challenge Video Voter</h1>
       <div id= "videoInputs">
         <h2> Add a new Video- </h2>
-         ]<div id = "inputMessage">
+         <div id = "inputMessage">
             {{addInMessage}}
             {{inputMessage}}
           </div>
@@ -36,19 +36,19 @@
       <th><a href="" ng-click="order('attributes.vote_tally')">Rank:</a></th>
       <th>Vote</th>
     </tr>
-      <tr ng-repeat= "video in videoArray |  orderBy:predicate:reverse" >
+      <tr ng-repeat= "video in videoArray  |  orderBy:predicate:reverse" >
         <th>{{video.attributes.created_at | limitTo : 10}}</th>
         <th>{{video.attributes.view_tally}}</th>
         <th>{{video.attributes.title}}</th>
-        <th> <a href="" ng-click="viewTallyUp( $index )">{{video.attributes.url}}</a></th>
+        <th> <a href="" ng-click="viewTallyUp( video )">{{video.attributes.url}}</a></th>
         <div id="votes">
         <th>{{video.attributes.vote_tally}}</th>
 
         <th>
           {{votingMessage}}
         <div id= "voteButtons" ng-show="votingOpen == 'true'">
-          <button ng-show="voteToday == 'true'" type="button" name="voteUp" ng-click="voteUp( $index )">Vote Up</button>
-          <button ng-show="voteToday == 'true'" type="button" name="voteDown" ng-click="voteDown( $index )">Vote Down</button></th>
+          <button type="button"  name="voteUp" ng-click="voteUp( video )">Vote Up</button>
+          <button  type="button" name="voteDown" ng-click="voteDown( video )">Vote Down</button></th>
         </div>
         </div>
       </tr>

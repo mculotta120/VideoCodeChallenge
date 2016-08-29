@@ -6,11 +6,10 @@ var myApp = angular.module( 'myApp', [] );
 
 myApp.controller('videoController', [ '$scope', '$http', '$window', function( $scope, $http, $window ){
   $scope.videoArray = [];
+  $scope.urlArray=[];
   $scope.votingOpen = 'true';
   $scope.votingMessage = "Voting is Open";
   $scope.addInMessage = "Add a Video";
-  $scope.inputMessage = "";
-  $scope.voteToday= "true";
 
   //open voting and new video input m-f
 
@@ -38,84 +37,81 @@ $scope.getAllVideos = function(){
 
        $http({
             method: 'GET',
-            url: 'https://proofapi.herokuapp.com/videos?page&per_page?page=1&per_page=10',
+            url: 'https://proofapi.herokuapp.com/videos',
             dataType: 'jsonp',
-            headers: { 'Content-Type':'application/json', 'X-Auth-Token':'QmDi1cmmxgWSrpqqQmfj4UwJ' }
+            headers: { 'Content-Type':'application/json', 'X-Auth-Token':'3mSSbwByhVHUpqRQSGMTP9Ja' }
           }).then( function( response ){
             // log the response from the http call
             console.log( 'retrieved info for ', response.data.data);
             $scope.videoArray = response.data.data;
+            console.log($scope.videoArray, "video array");
    });
-$scope.toggleVoting();
 
+   $scope.toggleVoting();
 }; // end getAllVideos
 
+//checks input url for duplicates within the API
 $scope.titleCheck = function(){
   for (i = 0; i < $scope.videoArray.length; i++){
-  if($scope.videoURLIn == $scope.videoArray[i].attributes.url){
-  $scope.inputMessage = "This video has already been added. Please add a new video.";
-  }else{ console.log("this is a new video.");
-  console.log($scope.videoArray[i].attributes.url, "url");
-  // $scope.addVideo();
-  }
+  $scope.urlArray.push($scope.videoArray[i].attributes.url);}
+  if ($scope.urlArray.indexOf( $scope.videoURLIn ) === -1) {
+    console.log("this is a new video");
+    $scope.addVideo();
+}else{
+  alert("This Video has already been added. Please add a new video.");
 }
+
 };
 
-
+//add video to API
 $scope.addVideo = function(){
-    $scope.videoTitleIn = "";
-    $scope.videoURLIn = "";
-    $scope.videoSlugIn = "";
-    $scope.getAllVideos();
-    $route.reload();
-    console.log($scope.inputMessage, "inputMessage");
+  var videoToAdd = {
+    title: $scope.videoTitleIn,
+    url: $scope.videoURLIn,
+    slug: $scope.videoSlugIn
+  };
+  $http({
+              method: 'POST',
+              url: 'https://proofapi.herokuapp.com/videos',
+              data: videoToAdd,
+              dataType: 'jsonp',
+              headers: { 'Content-Type':'application/json', 'X-Auth-Token':'3mSSbwByhVHUpqRQSGMTP9Ja' }
+            }).then( function( response ){
+             console.log(videoToAdd.title, "Added Video");
+             $scope.getAllVideos();
+            }); // end object
 
-
-  // var videoToAdd = {
-  //   title: $scope.videoTitleIn,
-  //   url: $scope.videoURLIn,
-  //   slug: $scope.videoSlugIn
-  // };
-  // $http({
-  //             method: 'POST',
-  //             url: 'https://proofapi.herokuapp.com/videos',
-  //             data: videoToAdd,
-  //             dataType: 'jsonp',
-  //             headers: { 'Content-Type':'application/json', 'X-Auth-Token':'QmDi1cmmxgWSrpqqQmfj4UwJ' }
-  //           }).then( function( response ){
-  //            console.log(videoToAdd.title, "Added Video");
-  //           }); // end object
-  //
-
+  $scope.videoTitleIn = "";
+  $scope.videoURLIn = "";
+  $scope.videoSlugIn = "";
+  // $scope.getAllVideos();
 }; //end addVideo
 
 //increase view count if link is clicked
-$scope.viewTallyUp = function( $index ){
-  var url = $scope.videoArray[$index].attributes.url;
+$scope.viewTallyUp = function( video ){
+  var url = video.attributes.url;
 
     var viewUpdate = {
-       video_id: $scope.videoArray[$index].id
+       video_id: video.id
     };
   $http({
               method: 'POST',
               url: 'https://proofapi.herokuapp.com/views',
               data: viewUpdate,
               dataType: 'jsonp',
-              headers: { 'Content-Type':'application/json', 'X-Auth-Token':'QmDi1cmmxgWSrpqqQmfj4UwJ' }
+              headers: { 'Content-Type':'application/json', 'X-Auth-Token':'3mSSbwByhVHUpqRQSGMTP9Ja' }
             }).then( function( response ){
-             console.log(response, "back from POST");
+            //  console.log(response, "back from POST");
             }); // end object
 
     $window.open( url );
+    $scope.getAllVideos();
 };
 
 //add vote to vote_tally
-$scope.voteUp = function( $index ){
-  console.log($scope.videoArray[$index].id, "id");
-  $scope.videoIndex = $scope.videoArray[$index].id;
-  console.log($scope.videoIndex, "video index");
+$scope.voteUp = function( video ){
+  $scope.videoIndex = video.id;
     var voteUpdate = {
-      // votes: $scope.plusOne
       opinion: 1
     };
   $http({
@@ -123,19 +119,17 @@ $scope.voteUp = function( $index ){
               url: 'https://proofapi.herokuapp.com/videos/'+$scope.videoIndex+'/votes',
               data: voteUpdate,
               dataType: 'jsonp',
-              headers: { 'Content-Type':'application/json', 'X-Auth-Token':'QmDi1cmmxgWSrpqqQmfj4UwJ' }
+              headers: { 'Content-Type':'application/json', 'X-Auth-Token':'3mSSbwByhVHUpqRQSGMTP9Ja' }
             }).then( function( response ){
-             console.log(response, "back from POST");
+            //  console.log(response, "back from POST");
             }); // end object
-
-            $scope.voteToday = "false";
+// $scope.votingOpen.video = 'false';
+$scope.getAllVideos();
 };  //end voteUp
 
 //subract vote from vote tally
-$scope.voteDown = function( $index ){
-  console.log($index, "vote down clicked");
-  $scope.videoIndex = $scope.videoArray[$index].id;
-  console.log($scope.videoIndex, "video index");
+$scope.voteDown = function( video ){
+  $scope.videoIndex = video.id;
     var voteUpdate = {
       opinion: -1
     };
@@ -144,13 +138,13 @@ $scope.voteDown = function( $index ){
               url: 'https://proofapi.herokuapp.com/videos/'+$scope.videoIndex+'/votes',
               data: voteUpdate,
               dataType: 'jsonp',
-              headers: { 'Content-Type':'application/json', 'X-Auth-Token':'QmDi1cmmxgWSrpqqQmfj4UwJ' }
+              headers: { 'Content-Type':'application/json', 'X-Auth-Token':'3mSSbwByhVHUpqRQSGMTP9Ja' }
             }).then( function( response ){
-             console.log(response, "back from POST");
+            //  console.log(response, "back from POST");
             }); // end object
-
-            $scope.voteToday = "false";
+  $scope.getAllVideos();
 }; //end voteDown
+
 
 
 //sort by table headers
